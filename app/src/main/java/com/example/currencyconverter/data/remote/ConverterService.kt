@@ -7,10 +7,10 @@ import retrofit2.http.Path
 
 interface ConverterService {
 
-    @GET("/currency-api@latest/v1/currencies.min.json")
+    @GET("currency-api@latest/v1/currencies.min.json")
     suspend fun getCurrencyList(): CurrenciesResponse
 
-    @GET("/currency-api@latest/v1/currencies/{base}.min.json")
+    @GET("currency-api@latest/v1/currencies/{base}.min.json")
     suspend fun getCurrencyRates(
         @Path("base") base: String
     ): CurrencyRatesResponse

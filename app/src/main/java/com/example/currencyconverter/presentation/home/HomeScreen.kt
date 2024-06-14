@@ -32,13 +32,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencyconverter.R
+import com.example.currencyconverter.TestViewModel
 import com.example.currencyconverter.presentation.home.componants.DropDown
 import com.example.currencyconverter.ui.theme.CurrencyConverterTheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: TestViewModel = hiltViewModel()
 ) {
 
     var selectedText1 by remember { mutableStateOf("Select") }

@@ -1,5 +1,7 @@
 package com.example.currencyconverter.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class Rates(
     val `$myro`: Double,
     val `$wen`: Double,
@@ -116,14 +118,15 @@ data class Rates(
     val bsd: Double,
     val bsv: Double,
     val bsw: Double,
-    val btc: Int,
-    val btc.b: Double,
+    val btc: Double,
+    @SerializedName("btc.b")
+    val btcdotb: Double,
     val btcb: Double,
     val btg: Double,
     val btn: Double,
-    val btrst: Double,
     val btt: Double,
     val busd: Double,
+    val btrst: Double,
     val bwp: Double,
     val byn: Double,
     val byr: Double,
