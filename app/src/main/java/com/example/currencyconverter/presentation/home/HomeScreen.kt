@@ -1,6 +1,5 @@
 package com.example.currencyconverter.presentation.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,14 +10,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencyconverter.R
-import com.example.currencyconverter.TestViewModel
+import com.example.currencyconverter.data.viewModels.TestViewModel
 import com.example.currencyconverter.presentation.home.componants.DropDown
 import com.example.currencyconverter.ui.theme.CurrencyConverterTheme
 
@@ -47,6 +47,8 @@ fun HomeScreen(
     var selectedText1 by remember { mutableStateOf("Select") }
     var selectedText2 by remember { mutableStateOf("Select") }
     var enteredAmount by remember { mutableStateOf("") }
+
+    val state by viewModel.homeState.collectAsState()
 
     Box(
         modifier = modifier
@@ -104,13 +106,47 @@ fun HomeScreen(
                 maxLines = 1,
                 singleLine = true,
                 label = { Text("Enter Amount") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
                 shape = RoundedCornerShape(12.dp)
             )
 
-            Text(
-                text = "Converted Amount : "
-            )
+            Spacer(modifier = Modifier.size(24.dp))
+
+            Button(
+                modifier = Modifier.align(Alignment.End),
+                onClick = {
+                    viewModel.getCurrencies(selectedText1.lowercase(), selectedText2.lowercase(), enteredAmount)
+                }
+            ) {
+                Text("Convert")
+            }
+            Spacer(modifier = Modifier.size(24.dp))
+
+            if(state.rate.isNotEmpty()) {
+                Text(
+                    text = "$enteredAmount $selectedText1 is equal to ${state.rate} $selectedText2",
+                )
+            }
+            if(state.error.isNotEmpty()){
+                Text(
+                    text = "Error: " + state.error,
+                    color = Color.Red
+                )
+            }
+        }
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(50.dp)
+                )
+            }
         }
     }
 }

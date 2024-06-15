@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.currencyconverter.common.CurrencyCodes
 import kotlin.math.exp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,9 +40,10 @@ fun DropDown(
     //var selectedText by remember { mutableStateOf("Select") }
     val items = listOf("USD", "EUR", "JPY", "GBP")
 
+    val items2 = CurrencyCodes.entries
+
     Box(
         modifier = modifier
-            //.widthIn(max = 200.dp)
     ) {
 
         ExposedDropdownMenuBox(
@@ -72,14 +74,14 @@ fun DropDown(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
-                items.forEach { item ->
+                items2.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item) },
+                        text = { Text(text = "${item.name} (${item.fullName})") },
                         onClick = {
-                            onClick(item)
+                            onClick(item.name)
                             Log.e("DropDown", "DropDown: $item")
                             expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, item.name, Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
